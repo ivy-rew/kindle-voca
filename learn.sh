@@ -1,39 +1,17 @@
 #!/bin/bash
 
-DB="sample/vocab.db"
-
-function quoteBook()
-{
-  WORD=$1
-  BOOK_QUERY="SELECT l.usage, b.title, b.authors FROM LOOKUPS l
-JOIN BOOK_INFO b ON b.id = l.book_key
-WHERE l.word_key == 'en:$WORD'"
-  QUOTE=$(sqlite3 $DB "$BOOK_QUERY")
-  grep --color $WORD <<< $QUOTE
-}
-
-function archive()
-{
-  WORD=$1
-  ARCHIVE_SQL="UPDATE WORDS 
-      SET category=100 
-      WHERE word='$WORD';"
-  sqlite3 $DB "$ARCHIVE_SQL"
-}
+source kindleVoc.sh "sample/vocab.db"
 
 function ask()
 {
   WORD=$1
-  echo $WORD
+  echo -e "\e[1;32;1;40;2m$WORD\e[0m"
   quoteBook $WORD
-  select OPERATION in 'next' 'archive' 'quote (kindle)' 'lookup (leo)'
+  select OPERATION in 'next' 'archive' 'lookup (leo)'
     do
         if [ "$OPERATION" == "lookup (leo)" ]; then
             echo "asking leo for meaning of: $WORD"
             leo ${WORD}
-        fi
-        if [ "$OPERATION" == "quote (kindle)" ]; then
-            quoteBook $WORD
         fi
         if [ "$OPERATION" == "archive" ]; then
             archive $WORD
@@ -43,17 +21,6 @@ function ask()
             break;
         fi
   done
-}
-
-function selectWords()
-{
-  CATEGORY=$1
-  WORDLIST_QUERY="SELECT word 
-    FROM words
-    WHERE category$CATEGORY
-    ORDER BY timestamp DESC"
-  WORDS=$(sqlite3 -newline ' ' $DB "$WORDLIST_QUERY")
-  echo $WORDS
 }
 
 function askMode()
