@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source kindleVoc.sh "sample/vocab.db"
+source leoDict.sh
 
 function ask()
 {
@@ -11,7 +12,7 @@ function ask()
     do
         if [ "$OPERATION" == "lookup (leo)" ]; then
             echo "asking leo for meaning of: $WORD"
-            leo ${WORD}
+            search ${WORD}
         fi
         if [ "$OPERATION" == "archive" ]; then
             archive $WORD
@@ -44,9 +45,6 @@ function askMode()
 
 function installDeps()
 {
-  if ! [ -x "$(command -v leo)" ]; then
-    sudo apt install -y libwww-dict-leo-org-perl
-  fi
   if ! [ -x "$(command -v sqlite3)" ]; then
     sudo apt install -y sqlite3
   fi
