@@ -27,7 +27,7 @@ function search()
 }
 
 function cleanSearch()
-{
+{ # reduce output: only actual translation lines
   search ${1} | \
     sed -e 's|.*dict\.leo\.org:||g' | \
     sed -e 's|^    .*||' | \
@@ -37,9 +37,19 @@ function cleanSearch()
 
 function resultSelect()
 {
+  word="$1"
   trans=$(( cleanSearch $1 ) 2>&1) 
-  readarray -t lines <<< "$trans"
-  select line in "${lines[@]}"; do
-    echo "$line"
+  readarray -t lines <<< "$trans"  # linewise to array
+
+  checks=( )
+  for line in "${lines[@]}"; do
+    checks+=("${line:1} " 0) # add state flag
   done
+
+  # old school dialog:
+  lineCount=${#lines[@]}
+  let "height=8+$lineCount"
+  width=80
+  whiptail --title "Best translation?" --backtitle "by leo.org" --noitem \
+   --checklist "results for: $word" $height $width $lineCount "${checks[@]}"
 }
