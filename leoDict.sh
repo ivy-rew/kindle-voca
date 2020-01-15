@@ -50,6 +50,7 @@ function resultSelect()
   lineCount=${#lines[@]}
   let "height=8+$lineCount"
   width=80
-  whiptail --title "Best translation?" --backtitle "by leo.org" --noitem \
-   --checklist "results for: $word" $height $width $lineCount "${checks[@]}"
+  selected=$(whiptail --title "Best translation?" --backtitle "by leo.org" --noitem \
+   --checklist "results for: $word" $height $width $lineCount "${checks[@]}" 3>&1 1>&2 2>&3)
+  echo $selected
 }
