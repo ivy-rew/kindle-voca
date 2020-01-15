@@ -1,6 +1,7 @@
 #!/bin/bash
 
-OXFORD_TXT="oxford.txt"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+OXFORD_TXT="$DIR/oxford.txt"
 
 if ! [ -f "$OXFORD_TXT" ]; then
   wget -O "$OXFORD_TXT" "https://raw.githubusercontent.com/sujithps/Dictionary/master/Oxford%20English%20Dictionary.txt"
