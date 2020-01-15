@@ -2,17 +2,22 @@
 
 source kindleVoc.sh "sample/vocab.db"
 source leoDict.sh
+source oxfordDict.sh
 
 function ask()
 {
   WORD=$1
   echo -e "\e[1;32;1;40;2m$WORD\e[0m"
   quoteBook $WORD
-  select OPERATION in 'next' 'archive' 'lookup (leo)'
+  select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
     do
-        if [ "$OPERATION" == "lookup (leo)" ]; then
+        if [ "$OPERATION" == "ask leo" ]; then
             echo "asking leo for meaning of: $WORD"
             search ${WORD}
+        fi
+        if [ "$OPERATION" == "ask oxford" ]; then
+            echo "asking oxford for meaning of: $WORD"
+            oxford ${WORD}
         fi
         if [ "$OPERATION" == "archive" ]; then
             archive $WORD
