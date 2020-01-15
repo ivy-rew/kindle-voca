@@ -11,21 +11,26 @@ function ask()
   quoteBook $WORD
   select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
     do
-        if [ "$OPERATION" == "ask leo" ]; then
+      case $OPERATION in 
+        "ask leo")
             echo "asking leo for meaning of: $WORD"
             search ${WORD}
-        fi
-        if [ "$OPERATION" == "ask oxford" ]; then
+            ;;
+        "ask oxford")
             echo "asking oxford for meaning of: $WORD"
             oxford ${WORD}
-        fi
-        if [ "$OPERATION" == "archive" ]; then
+            ;;
+        "archive")
             archive $WORD
-            break;
-        fi
-        if [ "$OPERATION" == "next" ]; then
-            break;
-        fi
+            break ;;
+        "next")
+            break ;;
+        *)
+            #rephrase the quest
+            echo -e "\e[1;32;1;40;2m$WORD\e[0m"
+            quoteBook $WORD 
+            ;;
+      esac
   done
 }
 
