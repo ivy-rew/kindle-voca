@@ -25,3 +25,21 @@ function search()
   fi
   echo -e "$RESPONSE"
 }
+
+function cleanSearch()
+{
+  search ${1} | \
+    sed -e 's|.*dict\.leo\.org:||g' | \
+    sed -e 's|^    .*||' | \
+    sed -E 's|^ (.*)| \1|g' | \
+    grep -Eo --null ' .*'
+}
+
+function resultSelect()
+{
+  trans=$(( cleanSearch $1 ) 2>&1) 
+  readarray -t lines <<< "$trans"
+  select line in "${lines[@]}"; do
+    echo "$line"
+  done
+}
