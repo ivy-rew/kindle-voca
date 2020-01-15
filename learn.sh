@@ -66,9 +66,12 @@ function main()
 
   echo "Which words do you want to train?"
   MODE=$(askMode)
-  WORDS=$(selectWords $MODE)
+  WORD_RAW=$(selectWords $MODE) 
+  read -r -a WORDS <<< "$WORD_RAW"
 
-  for WORD in $WORDS; do
+  COUNT=${#WORDS[@]}
+  echo "started training of ${COUNT} words"
+  for WORD in ${WORDS[@]}; do
     ask $WORD
   done
 }
