@@ -18,12 +18,13 @@ function search()
   CACHE_QUERY="SELECT response FROM query_cache c WHERE c.word=='${WORD}'"
   RESPONSE=$(sqlite3 "$LEODB" "$CACHE_QUERY")
   if [[ $RESPONSE != *"matches for"* ]]; then
-      RESPONSE=$(leo -n ${WORD} | iconv -f ISO-8859-1 -t utf-8 )
+      RESPONSE=$(leo -n ${WORD} | sed -e 's|[\”\“]|\"|g' | iconv -f ISO-8859-1 -t utf-8 )
       if [[ $RESPONSE == *"matches for"* ]]; then
           WRITE_QUERY="INSERT INTO QUERY_CACHE (word,response) VALUES ('${WORD}',\"${RESPONSE}\");"
           sqlite3 "$LEODB" "$WRITE_QUERY"
       fi
   fi
+  
   echo "${RESPONSE}"
 }
 
