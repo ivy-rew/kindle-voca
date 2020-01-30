@@ -4,36 +4,6 @@ source kindleVoc.sh "sample/vocab.db"
 source leoDict.sh
 source oxfordDict.sh
 
-function ask()
-{
-  WORD=$1
-  echo -e "\e[1;32;1;40;2m$WORD\e[0m"
-  quoteBook $WORD
-  select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
-    do
-      case $OPERATION in 
-        "ask leo")
-            echo "asking leo for meaning of: $WORD"
-            search ${WORD}
-            ;;
-        "ask oxford")
-            echo "asking oxford for meaning of: $WORD"
-            oxford ${WORD}
-            ;;
-        "archive")
-            archive $WORD
-            break ;;
-        "next")
-            break ;;
-        *)
-            #rephrase the quest
-            echo -e "\e[1;32;1;40;2m$WORD\e[0m"
-            quoteBook $WORD 
-            ;;
-      esac
-  done
-}
-
 function askMode()
 {
   RESULT="=0"
@@ -64,31 +34,38 @@ function htmlBreak()
   echo "${html[*]}"
 }
 
+function toAnkiLine()
+{
+  WORD=$1
+  SEP=$2
+
+  QUOTED=$(quoteBook ${WORD})
+  QUOUT=$(htmlBreak "${QUOTED}")
+
+  OXFORD=$(oxford ${WORD})
+  OXOUT=$(htmlBreak "${OXFORD}")
+
+  LEO=$(cleanSearch ${WORD})
+  LEOUT=$(htmlBreak "${LEO}")
+
+  LINE="${WORD}${SEP}${QUOUT}${SEP}${OXOUT}${SEP}${LEOUT}"
+  echo "$LINE"
+}
+
 function anki()
 {
-  echo "Which words do you want to train?"
+  echo "Which words do you want to select?"
   MODE=$(askMode)
   WORD_RAW=$(selectWords $MODE) 
   read -r -a WORDS <<< "$WORD_RAW"
 
-  COUNT=${#WORDS[@]}
   SEP='$'
   FILE='anki.txt'
   rm "$FILE"
   for WORD in ${WORDS[@]}; do
-    QUOTED=$(quoteBook ${WORD})
-    QUOUT=$(htmlBreak "${QUOTED}")
-
-    OXFORD=$(oxford ${WORD})
-    OXOUT=$(htmlBreak "${OXFORD}")
-
-    LEO=$(cleanSearch ${WORD})
-    LEOUT=$(htmlBreak "${LEO}")
-
-    LINE="${WORD}${SEP}${QUOUT}${SEP}${OXOUT}${SEP}${LEOUT}"
-    echo "${LINE}" >> $FILE
+    toAnkiLine "${WORD}" "${SEP}" >> $FILE
   done
-  
+
   cat $FILE
 }
 
