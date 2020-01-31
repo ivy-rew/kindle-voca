@@ -34,18 +34,30 @@ function htmlBreak()
   echo "${html[*]}"
 }
 
+function ankiQuote()
+{
+  WORD="$1"
+  QUOTED=$( quoteBook "${WORD}" )
+  IFS='|'; read -r -a PARTS <<< "$QUOTED"
+  HTML="${PARTS[0]:0:-1}<br/>"
+  HTML+="<i style=\"font-size:0.8em; color:grey\">${PARTS[1]:1:-1} (${PARTS[2]:1})</i><br/>"
+  RESULT=$(echo "${HTML}" | \
+    sed -e "s|${WORD}|<b>${WORD}</b>|g")
+  echo "$RESULT"
+}
+
 function toAnkiLine()
 {
   WORD=$1
   SEP=$2
 
-  QUOTED=$(quoteBook ${WORD})
+  QUOTED=$(ankiQuote "${WORD}")
   QUOUT=$(htmlBreak "${QUOTED}")
 
-  OXFORD=$(oxford ${WORD})
+  OXFORD=$(oxford "${WORD}")
   OXOUT=$(htmlBreak "${OXFORD}")
 
-  LEO=$(cleanSearch ${WORD})
+  LEO=$(cleanSearch "${WORD}")
   LEOUT=$(htmlBreak "${LEO}")
 
   LINE="${WORD}${SEP}${QUOUT}${SEP}${OXOUT}${SEP}${LEOUT}"
