@@ -46,6 +46,27 @@ function ankiQuote()
   echo "$RESULT"
 }
 
+function leoSplit()
+{
+  LINE="$1"
+  TRANS=$(echo "$LINE" | \
+   sed -E "s| (.*) ([ ]{3,})(.*)|<span class=\"word\">\1</span><span class=\"trans\">\3</span>|g")
+  echo "$TRANS"
+}
+
+function ankiLeo()
+{
+  WORD="$1"
+  LEO=$(cleanSearch "${WORD}")
+  readarray -t TLINES <<< "${LEO}"
+  HOUT=""
+  for L in "${TLINES[@]}"; do
+    HOUT+=$(leoSplit "${L}")
+    HOUT+="\n"
+  done
+  printf "$HOUT"
+}
+
 function toAnkiLine()
 {
   WORD=$1
@@ -57,7 +78,7 @@ function toAnkiLine()
   OXFORD=$(oxford "${WORD}")
   OXOUT=$(htmlBreak "${OXFORD}")
 
-  LEO=$(cleanSearch "${WORD}")
+  LEO=$(ankiLeo "${WORD}")
   LEOUT=$(htmlBreak "${LEO}")
 
   LINE="${WORD}${SEP}${QUOUT}${SEP}${OXOUT}${SEP}${LEOUT}"
