@@ -38,9 +38,15 @@ function ankiQuote()
 {
   WORD="$1"
   QUOTED=$( quoteBook "${WORD}" )
-  IFS='|'; read -r -a PARTS <<< "$QUOTED"
-  HTML="${PARTS[0]:0:-1}<br/>"
-  HTML+="<i style=\"font-size:0.8em; color:grey\">${PARTS[1]:1:-1} (${PARTS[2]:1})</i><br/>"
+  
+  HTML=""
+  readarray -t QLINES <<< "$QUOTED"
+  for QUOTE in "${QLINES[@]}"; do
+    IFS='|'; read -r -a PARTS <<< "${QUOTE}"
+    HTML+="${PARTS[0]:0:-1}<br/>"
+    HTML+="<i class=\"ref\">${PARTS[1]:1:-1} (${PARTS[2]:1})</i><br/>"
+  done
+  
   RESULT=$(echo "${HTML}" | \
     sed -e "s|${WORD}|<b>${WORD}</b>|g")
   echo "$RESULT"
