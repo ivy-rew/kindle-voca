@@ -5,10 +5,11 @@ DB=$1
 function quoteBook()
 {
   STEM=$1
-  BOOK_QUERY="SELECT l.usage, b.title, b.authors, w.word FROM LOOKUPS l
+  BOOK_QUERY="SELECT replace(l.usage,\"
+\",\" \"), b.title, b.authors, w.word FROM LOOKUPS l
 JOIN BOOK_INFO b ON b.id = l.book_key
 JOIN WORDS w on w.id = l.word_key
-WHERE w.stem == '$STEM'"
+WHERE w.stem == '${STEM}'"
   RESR=$(sqlite3 -separator ' | ' $DB "$BOOK_QUERY")
   readarray -t RES <<< ${RESR}
   WORD=$(echo "${RES[0]}" | awk -F "| " '{print $NF}')
