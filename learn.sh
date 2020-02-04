@@ -6,29 +6,29 @@ source oxfordDict.sh
 
 function ask()
 {
-  WORD=$1
-  echo -e "\e[1;32;1;40;2m$WORD\e[0m"
-  quoteBook $WORD
+  STEM=$1
+  echo -e "\e[1;32;1;40;2m$STEM\e[0m"
+  quoteBook $STEM
   select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
     do
       case $OPERATION in 
         "ask leo")
-            echo "asking leo for meaning of: $WORD"
-            search ${WORD}
+            echo "asking leo for meaning of: ${STEM}"
+            search ${STEM}
             ;;
         "ask oxford")
-            echo "asking oxford for meaning of: $WORD"
-            oxford ${WORD}
+            echo "asking oxford for meaning of: $STEM"
+            oxford ${STEM}
             ;;
         "archive")
-            archive $WORD
+            archive $STEM
             break ;;
         "next")
             break ;;
         *)
             #rephrase the quest
-            echo -e "\e[1;32;1;40;2m$WORD\e[0m"
-            quoteBook $WORD 
+            echo -e "\e[1;32;1;40;2m$STEM\e[0m"
+            quoteBook $STEM 
             ;;
       esac
   done
