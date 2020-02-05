@@ -43,3 +43,8 @@ Tested on a debian based system such as Ubuntu / Linux Mint.
 Use the Anki templating mechanism to arrange flash cards just how you love em:
 
  ![import](doc/img/ankiDesktop_templateGlean.png)
+
+## Bash lunatics
+We love bash! And sometimes we don't care about spaced repetition and stuff... So a basic vocabulary trainer is also available in plain bash. Just run `./learn.sh` in order to practice in a shell 🤩
+
+ ![import](doc/img/bash_trainBlossom.png)
