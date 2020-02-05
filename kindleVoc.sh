@@ -13,12 +13,22 @@ function quoteBook()
     WHERE w.stem == '${STEM}'"
   RESR=$(sqlite3 -separator ' | ' $DB "$BOOK_QUERY")
   readarray -t RES <<< ${RESR}
+  
+  start=$(tput setaf 1)
+  if [ ! -z "$2" ]; then
+    start="${2}"
+  fi
+  end=$(tput sgr0)
+  if [ ! -z "$3" ]; then
+    end="${3}"
+  fi
+  
   for Q in "${RES[@]}"; do
     WORD=$(echo "${Q}" | awk -F "| " '{print $NF}')
     WLEN=${#WORD}
     CUT=$(($WLEN+2))
     QUOTE="${Q:0:-${CUT}}"
-    echo "${QUOTE}" | grep --color "$WORD"
+    echo "${QUOTE}" | sed -e "s|$WORD|${start}${WORD}${end}|g"
   done
 }
 

@@ -37,19 +37,16 @@ function htmlBreak()
 function ankiQuote()
 {
   WORD="$1"
-  QUOTED=$( quoteBook "${WORD}" )
-  
+  QUOTED=$(quoteBook "${WORD}" "<b>" "</b>")
+
   HTML=""
   readarray -t QLINES <<< "$QUOTED"
   for QUOTE in "${QLINES[@]}"; do
     IFS='|'; read -r -a PARTS <<< "${QUOTE}"
     HTML+="${PARTS[0]:0:-1}<br/>"
-    HTML+="<i class=\"ref\">${PARTS[1]:1:-1} (${PARTS[2]:1})</i><br/>"
+    HTML+="<i class=\"ref\">${PARTS[1]:1:-1} (${PARTS[2]:1:-1})</i><br/>"
   done
-  
-  RESULT=$(echo "${HTML}" | \
-    sed -e "s|${WORD}|<b>${WORD}</b>|g")
-  echo "$RESULT"
+  echo "$HTML"
 }
 
 function leoSplit()
