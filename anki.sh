@@ -98,7 +98,7 @@ function anki()
   WORD_RAW=$(selectWords $MODE) 
   read -r -a WORDS <<< "$WORD_RAW"
 
-  SEP='$'
+  SEP='|'
   FILE='anki.txt'
   rm "$FILE"
   for WORD in ${WORDS[@]}; do
