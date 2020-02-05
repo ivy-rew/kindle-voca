@@ -28,14 +28,15 @@ We export your voca with enriched data into an Anki flash card compatible format
 Tested on a debian based system such as Ubuntu / Linux Mint.
 
 1. Clone this repository `git clone https://github.com/ivy-rew/kindle-voca.git`
-2. Copy your vocadb.db from your kindle `system/vocabulary/vocab.db` into the 'sample' dir of cour working copy.
+2. Copy your vocadb.db from your kindle `system/vocabulary/vocab.db` into the 'sample' dir of your working copy.
 3. run `anki.sh` to produce a textfile (anki.txt) which contains your lookups enriched with translations
 4. install the anki desktop app `sudo apt install anki`
-5. Import the 'kindled' deck from [sample/kindled_empty.apk](sample/kindled_empty.apk)
+5. login with an existing ankiweb account or create one [online](https://ankiweb.net)
+5. Import the 'kindled' deck from [sample/kindled_empty.apk](blob/master/sample/kindled_empty.apkg?raw=true)
 6. use the importer to load the data into the anki deck
  ![import](doc/img/ankiDesktop_importSettings.png)
 7. run the synchronization to put it on the web (usually private for your account)
-8. download the anki app for your mobile device (e.g. ankidroid)
+8. download the anki app for your mobile device (e.g. [ankidroid](https://play.google.com/store/apps/details?id=com.ichi2.anki))
 9. login and start training your deck
 
 # Customize
