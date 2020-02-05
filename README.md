@@ -32,7 +32,7 @@ Tested on a debian based system such as Ubuntu / Linux Mint.
 3. run `anki.sh` to produce a textfile (anki.txt) which contains your lookups enriched with translations
 4. install the anki desktop app `sudo apt install anki`
 5. login with an existing ankiweb account or create one [online](https://ankiweb.net)
-5. Import the 'kindled' deck from [sample/kindled_empty.apk](blob/master/sample/kindled_empty.apkg?raw=true)
+5. Import the 'kindled' deck from [sample/kindled_empty.apk](sample/kindled_empty.apkg?raw=true)
 6. use the importer to load the data into the anki deck
  ![import](doc/img/ankiDesktop_importSettings.png)
 7. run the synchronization to put it on the web (usually private for your account)
