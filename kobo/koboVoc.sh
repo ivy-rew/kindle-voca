@@ -19,10 +19,26 @@ function installDeps()
 
 function quoteBook()
 {
-   epubPath=$(selectBook $1)
-   book=$(basename "$epubPath") 
-   # copy locally or read from remote
-   epub2txt "$KDIR/sample/$book" | grep $1
+   book=$(bookOfWord $1)
+   epub2txt "$book" | grep -m 1 $1
+   bookDesc "$book"
+}
+
+function bookOfWord()
+{
+  epubPath=$(selectBook $1)
+  book=$(basename "$epubPath") 
+  # copy locally or read from remote
+  echo "$KDIR/sample/$book"
+}
+
+function bookDesc()
+{
+  book=$1
+  meta=$(epub2txt -m --notext "$book")
+  author=$(echo "$meta" | grep 'Creator: ')
+  title=$(echo "$meta" | grep 'Title: ')
+  echo "${title#*:},${author#*:}"
 }
 
 function archive()
