@@ -10,10 +10,9 @@ function installDeps()
     if ! [ -d "epub2txt2" ]; then
       git clone https://github.com/kevinboone/epub2txt2
     fi
-    dir=$(pwd)
     cd epub2txt2
     sudo make install
-    cd $dir
+    cd $KDIR
   fi
 }
 
@@ -43,11 +42,7 @@ function bookDesc()
 
 function archive()
 {
-  WORD=$1
-  ARCHIVE_SQL="UPDATE WORDS 
-      SET category=100 
-      WHERE stem='$WORD';"
-  sqlite3 $DB "$ARCHIVE_SQL"
+  #not supported - no states on Kobo...
 }
 
 function selectBook()
