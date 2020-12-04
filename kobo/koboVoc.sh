@@ -42,7 +42,7 @@ function bookDesc()
 
 function archive()
 {
-  #not supported - no states on Kobo...
+  echo 'unsupported on kobo'
 }
 
 function selectBook()
