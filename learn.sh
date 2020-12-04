@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source kindleVoc.sh "sample/vocab.db"
 source leoDict.sh
 source oxfordDict.sh
 
@@ -60,12 +59,30 @@ function installDeps()
   fi
 }
 
+function initSettings()
+{
+  settings="$DIR/settings.conf"
+  if ! [ -f "$settings" ]; then
+    echo "No settings found at '$settings' using '$(basename ${settings}.template)'"
+    echo "Setup your actual environment by copying the template to '$(basename $settings)' and adjust it to your preferences."
+    settings="${settings}.template"
+  fi
+  . "$settings"
+}
+
 function main()
 {
+  initSettings
   installDeps
 
-  echo "Which words do you want to train?"
-  MODE=$(askMode)
+  if [ "$device" == "kindle" ]; then
+    . kindleVoc.sh "${db}"
+    echo "Which words do you want to train?"
+    MODE=$(askMode)
+  else
+    . kobo/koboVoc.sh "${db}"
+  fi
+  
   WORD_RAW=$(selectWords $MODE) 
   read -r -a WORDS <<< "$WORD_RAW"
 
