@@ -94,11 +94,6 @@ function metaValue()
   echo "$meta" | grep "$field" | awk 'BEGIN{FS=":"}{print $2}' | awk '{$1=$1; print}'
 }
 
-function archive()
-{
-  echo 'unsupported on kobo'
-}
-
 function selectBook()
 {
   WORD=$1

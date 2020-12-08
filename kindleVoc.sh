@@ -51,3 +51,22 @@ function selectWords()
   WORDS=$(sqlite3 -newline ' ' $DB "$WORDLIST_QUERY")
   echo $WORDS
 }
+
+function askMode()
+{
+  RESULT="=0"
+  select MODE in 'archived' 'open' 'all'
+  do
+    if [ "$MODE" == "archived" ]; then
+        RESULT='=100'
+    fi
+    if [ "$MODE" == "open" ]; then
+        RESULT='=0'
+    fi
+    if [ "$MODE" == "all" ]; then
+        RESULT='>=0'
+    fi
+    break;
+  done
+  echo $RESULT
+}

@@ -5,25 +5,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$DIR/leoDict.sh"
 source "$DIR/oxfordDict.sh"
 
-function askMode()
-{
-  RESULT="=0"
-  select MODE in 'archived' 'open' 'all'
-  do
-    if [ "$MODE" == "archived" ]; then
-        RESULT='=100'
-    fi
-    if [ "$MODE" == "open" ]; then
-        RESULT='=0'
-    fi
-    if [ "$MODE" == "all" ]; then
-        RESULT='>=0'
-    fi
-    break;
-  done
-  echo $RESULT
-}
-
 function htmlBreak()
 {
   input=$1

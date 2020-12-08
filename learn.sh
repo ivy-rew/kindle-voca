@@ -39,25 +39,6 @@ function ask()
   done
 }
 
-function askMode()
-{
-  RESULT="=0"
-  select MODE in 'archived' 'open' 'all'
-  do
-    if [ "$MODE" == "archived" ]; then
-        RESULT='=100'
-    fi
-    if [ "$MODE" == "open" ]; then
-        RESULT='=0'
-    fi
-    if [ "$MODE" == "all" ]; then
-        RESULT='>=0'
-    fi
-    break;
-  done
-  echo $RESULT
-}
-
 function installDeps()
 {
   if ! [ -x "$(command -v sqlite3)" ]; then
