@@ -2,7 +2,7 @@
 
 setup(){
   . "./koboVoc.sh" "sample/KoboReader.sqlite"
-  echo "a"
+  installDeps
 }
 
 @test "readWords" {
