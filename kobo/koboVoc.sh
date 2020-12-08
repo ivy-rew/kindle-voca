@@ -19,9 +19,18 @@ function installDeps()
 
 function quoteBook()
 {
-   book=$(bookOfWord $1)
-   epub2txt "$book" | grep -m 1 $1
-   bookDesc "$book"
+  word=$1
+  book=$(bookOfWord $word)
+  match=$(epub2txt --noansi --raw "$book" | grep -m 1 "$word")
+  quote=$(sentence "$match" "$word")
+  echo "$quote"
+  bookDesc "$book"
+}
+
+function sentence()
+{ # enforce newlines after punctuation: and not by epub magic!
+  quote="$1"; word="$2"
+  echo "$quote" | sed -e "s#\([\.|\?|\!]\) #\1\n#g" | grep "$word"
 }
 
 function bookOfWord()
