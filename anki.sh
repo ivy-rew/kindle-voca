@@ -1,27 +1,10 @@
 #!/bin/bash
 
-source kindleVoc.sh "sample/vocab.db"
-source leoDict.sh
-source oxfordDict.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-function askMode()
-{
-  RESULT="=0"
-  select MODE in 'archived' 'open' 'all'
-  do
-    if [ "$MODE" == "archived" ]; then
-        RESULT='=100'
-    fi
-    if [ "$MODE" == "open" ]; then
-        RESULT='=0'
-    fi
-    if [ "$MODE" == "all" ]; then
-        RESULT='>=0'
-    fi
-    break;
-  done
-  echo $RESULT
-}
+source "$DIR/leoDict.sh"
+source "$DIR/oxfordDict.sh"
+source "$DIR/settings-funct.sh"
 
 function htmlBreak()
 {
@@ -35,6 +18,27 @@ function htmlBreak()
 }
 
 function ankiQuote()
+{
+  if [ "$device" == "kindle" ]; then
+    ankiQuoteKindle $1
+  else
+    ankiQuoteKobo $1
+  fi
+}
+
+function ankiQuoteKobo()
+{
+  word=$1
+  book=$(bookOfWord $word)
+  usage=$(findUsage "$book" "$word")
+  ref=$(bookDesc "$book")
+
+  HTML=$(highlight "$usage" "$word" "<b>" "</b>")
+  HTML+="<br/><i class=\"ref\">$ref</i><br/>"
+  echo "$HTML"
+}
+
+function ankiQuoteKindle()
 {
   WORD="$1"
   QUOTED=$(quoteBook "${WORD}" "<b>" "</b>")
@@ -90,8 +94,17 @@ function toAnkiLine()
 
 function anki()
 {
-  echo "Which words do you want to select?"
-  MODE=$(askMode)
+  initSettings
+
+  if [ "$device" == "kindle" ]; then
+    . kindleVoc.sh "${db}"
+    echo "Which words do you want to select?"
+    MODE=$(askMode)
+  else
+    . kobo/koboVoc.sh "${db}" "${kMount}"
+  fi
+
+
   WORD_RAW=$(selectWords $MODE) 
   read -r -a WORDS <<< "$WORD_RAW"
 
@@ -105,4 +118,6 @@ function anki()
   cat $FILE
 }
 
-anki
+if ! [ "$1" == "test" ]; then
+  anki
+fi

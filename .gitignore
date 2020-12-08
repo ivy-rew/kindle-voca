@@ -2,3 +2,4 @@ leoCache.db
 oxford.txt
 settings.conf
 kobo/sample/KoboReader.db
+kobo/.bookCache

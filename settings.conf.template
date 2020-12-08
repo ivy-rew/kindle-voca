@@ -1,7 +1,10 @@
 # either 'kobo' or 'kindle'
 device=kobo
 
+# where your kobo device is mounted: e.g. /media/$USER/KOBOeReader
+kMount=sample
+
 # a place where your sqlite db can accessed
-# for kobo this could be: [mountOfYourDevice]/.kobo/KoboReader.sqlite
-# for kindle this could be: [mountOfYourDevice]/system/vocabulary/vocab.db
+# for kobo this could be: $kMount/.kobo/KoboReader.sqlite
+# for kindle this could be: [kMount]/system/vocabulary/vocab.db
 db=kobo/sample/KoboReader.sqlite

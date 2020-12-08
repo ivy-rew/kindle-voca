@@ -1,15 +1,22 @@
 #!/bin/bash
 
-source leoDict.sh
-source oxfordDict.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR/leoDict.sh"
+source "$DIR/oxfordDict.sh"
+source "$DIR/settings-funct.sh"
+
 
 function ask()
 {
   STEM=$1
   echo -e "\e[1;32;1;40;2m$STEM\e[0m"
   quoteBook $STEM
-  select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
-    do
+  OPS=( 'next' 'ask leo' 'ask oxford' )
+  if [ "$device" == "kindle" ]; then
+    OPS+=( 'archive' )
+  fi
+  select OPERATION in "${OPS[@]}"; do
       case $OPERATION in 
         "ask leo")
             echo "asking leo for meaning of: ${STEM}"
@@ -33,41 +40,11 @@ function ask()
   done
 }
 
-function askMode()
-{
-  RESULT="=0"
-  select MODE in 'archived' 'open' 'all'
-  do
-    if [ "$MODE" == "archived" ]; then
-        RESULT='=100'
-    fi
-    if [ "$MODE" == "open" ]; then
-        RESULT='=0'
-    fi
-    if [ "$MODE" == "all" ]; then
-        RESULT='>=0'
-    fi
-    break;
-  done
-  echo $RESULT
-}
-
 function installDeps()
 {
   if ! [ -x "$(command -v sqlite3)" ]; then
     sudo apt install -y sqlite3
   fi
-}
-
-function initSettings()
-{
-  settings="$DIR/settings.conf"
-  if ! [ -f "$settings" ]; then
-    echo "No settings found at '$settings' using '$(basename ${settings}.template)'"
-    echo "Setup your actual environment by copying the template to '$(basename $settings)' and adjust it to your preferences."
-    settings="${settings}.template"
-  fi
-  . "$settings"
 }
 
 function main()
@@ -80,7 +57,7 @@ function main()
     echo "Which words do you want to train?"
     MODE=$(askMode)
   else
-    . kobo/koboVoc.sh "${db}"
+    . kobo/koboVoc.sh "${db}" "${kMount}"
   fi
   
   WORD_RAW=$(selectWords $MODE) 
