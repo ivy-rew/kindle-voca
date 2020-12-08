@@ -11,6 +11,7 @@ function installDeps()
       git clone https://github.com/kevinboone/epub2txt2
     fi
     cd epub2txt2
+    make
     sudo make install
     cd $KDIR
   fi
