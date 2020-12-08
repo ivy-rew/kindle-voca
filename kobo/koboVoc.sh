@@ -1,7 +1,9 @@
 #!/bin/bash
 
-DB=$1
+DB=$1; DEVICE=$2
+
 KDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+bookCache="$KDIR/.bookCache"
 
 function installDeps()
 {
@@ -47,9 +49,19 @@ function sentence()
 function bookOfWord()
 {
   epubPath=$(selectBook $1)
-  book=$(basename "$epubPath") 
-  # copy locally or read from remote
-  echo "$KDIR/sample/$book"
+  book=${epubPath#'file:///mnt/onboard/'}
+  bookPath="$bookCache/$book"
+  if ! [ -f "$bookCache/$book" ]; then
+    devicePath="$DEVICE/$book"
+    if ! [ -f "$devicePath" ]; then
+      echo "failed to load ${devicePath}"
+      echo "is your Kobo device mounted? Does it match the 'settings.conf' entry called 'kMount'?"
+    else
+      mkdir -p "$(dirname "$bookPath")"
+      cp "$devicePath" "$bookPath"
+    fi
+  fi
+  echo "$bookPath"
 }
 
 function highlight()

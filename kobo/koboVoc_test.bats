@@ -1,7 +1,8 @@
 #!/usr/bin/evn bats
 
 setup(){
-  . "./koboVoc.sh" "sample/KoboReader.sqlite"
+  . "./koboVoc.sh" "sample/KoboReader.sqlite" "sample"
+  bookCache=/tmp/kobo #re-route: keep my real local cache!
   installDeps
 }
 
@@ -44,4 +45,14 @@ setup(){
     hightlighted=$(highlight "${quote}" "${word}" "<b>" "</b>")
     echo "current highlight: ${hightlighted}"
     [[ "$hightlighted" = "Oh my <b>ears</b> and whiskers" ]]
+}
+
+@test "loadBook" {
+    word="whiskers"
+    echo "cache is: $bookCache" >&1
+    rm -rf "$bookCache"
+    book=$(bookOfWord "whiskers")
+    echo "book path: $book"
+    [[ "$book" == "$bookCache/calibre/Carroll, Lewis/Alice_s Adventures in Wonderland - Lewis Carroll.kepub.epub" ]]
+    [[ "$book" == "/tmp/"* ]]
 }

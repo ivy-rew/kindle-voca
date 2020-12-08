@@ -1,7 +1,10 @@
 #!/bin/bash
 
-source leoDict.sh
-source oxfordDict.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR/leoDict.sh"
+source "$DIR/oxfordDict.sh"
+
 
 function ask()
 {
@@ -77,10 +80,11 @@ function main()
 
   if [ "$device" == "kindle" ]; then
     . kindleVoc.sh "${db}"
-    echo "Which words do you want to train?"
+    echo "Which words do you want tteBook $STEM 
+            ;;o train?"
     MODE=$(askMode)
   else
-    . kobo/koboVoc.sh "${db}"
+    . kobo/koboVoc.sh "${db}" "${kMount}"
   fi
   
   WORD_RAW=$(selectWords $MODE) 
