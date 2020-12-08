@@ -11,8 +11,11 @@ function ask()
   STEM=$1
   echo -e "\e[1;32;1;40;2m$STEM\e[0m"
   quoteBook $STEM
-  select OPERATION in 'next' 'archive' 'ask leo' 'ask oxford'
-    do
+  OPS=( 'next' 'ask leo' 'ask oxford' )
+  if [ "$device" == "kindle" ]; then
+    OPS+=( 'archive' )
+  fi
+  select OPERATION in "${OPS[@]}"; do
       case $OPERATION in 
         "ask leo")
             echo "asking leo for meaning of: ${STEM}"
