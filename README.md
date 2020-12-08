@@ -2,6 +2,7 @@
 
 > a mature bash based feed for Anki
 
+![CI](https://github.com/ivy-rew/kindle-voca/workflows/CI/badge.svg)
 
 Kindle has a great in book translation feature which makes content written in a foreign language highly accessible.
 ![lookup](doc/img/kindle_lookupGlean.jpg)
