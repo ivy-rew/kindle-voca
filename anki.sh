@@ -37,6 +37,27 @@ function htmlBreak()
 
 function ankiQuote()
 {
+  if [ "$device" == "kindle" ]; then
+    ankiQuoteKindle $1
+  else
+    ankiQuoteKobo $1
+  fi
+}
+
+function ankiQuoteKobo()
+{
+  word=$1
+  book=$(bookOfWord $word)
+  usage=$(findUsage "$book" "$word")
+  ref=$(bookDesc "$book")
+
+  HTML=$(highlight "$usage" "$word" "<b>" "</b>")
+  HTML+="<br/><i class=\"ref\">$ref</i><br/>"
+  echo "$HTML"
+}
+
+function ankiQuoteKindle()
+{
   WORD="$1"
   QUOTED=$(quoteBook "${WORD}" "<b>" "</b>")
 
