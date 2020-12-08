@@ -14,7 +14,7 @@ setup(){
 @test "quoting" {
     quote=$(quoteBook "whiskers")
     echo "current quote: $quote" >&1
-    [[ "$quote" = *"Oh my ears and whiskers, how late it’s getting!"* ]]
+    [[ "$quote" = *"Oh my ears and whiskers,"* ]]
 }
 
 @test "bookMeta" {
