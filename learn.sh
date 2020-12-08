@@ -83,8 +83,7 @@ function main()
 
   if [ "$device" == "kindle" ]; then
     . kindleVoc.sh "${db}"
-    echo "Which words do you want tteBook $STEM 
-            ;;o train?"
+    echo "Which words do you want to train?"
     MODE=$(askMode)
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"

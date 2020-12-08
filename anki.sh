@@ -1,8 +1,9 @@
 #!/bin/bash
 
-source kindleVoc.sh "sample/vocab.db"
-source leoDict.sh
-source oxfordDict.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$DIR/leoDict.sh"
+source "$DIR/oxfordDict.sh"
 
 function askMode()
 {
@@ -88,10 +89,30 @@ function toAnkiLine()
   echo "$LINE"
 }
 
+function initSettings()
+{
+  settings="$DIR/settings.conf"
+  if ! [ -f "$settings" ]; then
+    echo "No settings found at '$settings' using '$(basename ${settings}.template)'"
+    echo "Setup your actual environment by copying the template to '$(basename $settings)' and adjust it to your preferences."
+    settings="${settings}.template"
+  fi
+  . "$settings"
+}
+
 function anki()
 {
-  echo "Which words do you want to select?"
-  MODE=$(askMode)
+  initSettings
+
+  if [ "$device" == "kindle" ]; then
+    . kindleVoc.sh "${db}"
+    echo "Which words do you want to select?"
+    MODE=$(askMode)
+  else
+    . kobo/koboVoc.sh "${db}" "${kMount}"
+  fi
+
+
   WORD_RAW=$(selectWords $MODE) 
   read -r -a WORDS <<< "$WORD_RAW"
 
@@ -105,4 +126,6 @@ function anki()
   cat $FILE
 }
 
-anki
+if ! [ "$1" == "test" ]; then
+  anki
+fi
