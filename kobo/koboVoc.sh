@@ -30,7 +30,11 @@ function quoteBook()
 function sentence()
 { # enforce newlines after punctuation: and not by epub magic!
   quote="$1"; word="$2"
-  echo "$quote" | sed -e "s#\([\.|\?|\!]\) #\1\n#g" | grep "$word"
+  echo "$quote" | \
+    sed -e "s#\([\.|\?|\!|\:|”] \)#\1\n#g" | \
+    sed -e "s#\( [“]\)#\n\1#g" | \
+    awk '{$1=$1; print}' | \
+    grep "$word"
 }
 
 function bookOfWord()

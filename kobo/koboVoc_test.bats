@@ -13,8 +13,8 @@ setup(){
 
 @test "quoting" {
     quote=$(quoteBook "whiskers")
-    echo "current quote: $quote" >&1
-    [[ "$quote" = "There was not a moment to be lost: away went Alice like the wind, and was just in time to hear it say, as it turned a corner, “Oh my ears and whiskers, how late it’s getting!"* ]]
+    echo "current quote: '${quote}'" >&1
+    [[ "$quote" = "“Oh my ears and whiskers, how late it’s getting!”"* ]]
 }
 
 @test "bookMeta" {
@@ -28,4 +28,11 @@ setup(){
     book=$(bookOfWord "whiskers")
     echo "current book: ${book}" >&1
     [[ "$book" = *"Alice"* ]]
+}
+
+@test "sentence" {
+    extract="introducing a discordant note, “the knavery already began at the train station.” An Italian boy who shared"
+    quote=$(sentence "$extract" "knavery")
+    echo "current quote: ${quote}" >&1
+    [[ "$quote" = "“the knavery already began at the train station.”" ]]
 }
