@@ -1,0 +1,7 @@
+# either 'kobo' or 'kindle'
+device=kobo
+
+# a place where your sqlite db can accessed
+# for kobo this could be: [mountOfYourDevice]/.kobo/KoboReader.sqlite
+# for kindle this could be: [mountOfYourDevice]/system/vocabulary/vocab.db
+db=kobo/sample/KoboReader.sqlite
