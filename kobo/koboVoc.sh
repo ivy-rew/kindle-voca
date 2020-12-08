@@ -21,10 +21,17 @@ function quoteBook()
 {
   word=$1
   book=$(bookOfWord $word)
+  usage=$(findUsage "$book" "$word")
+  highlight "$usage" "$word"
+  bookDesc "$book"
+}
+
+function findUsage()
+{
+  book=$1; word=$2; 
   match=$(epub2txt --noansi --raw "$book" | grep -m 1 "$word")
   quote=$(sentence "$match" "$word")
   echo "$quote"
-  bookDesc "$book"
 }
 
 function sentence()
@@ -43,6 +50,21 @@ function bookOfWord()
   book=$(basename "$epubPath") 
   # copy locally or read from remote
   echo "$KDIR/sample/$book"
+}
+
+function highlight()
+{
+  input=$1; highlight=$2
+  start=$(tput setaf 1)
+  if [ ! -z "$3" ]; then
+    start="${3}"
+  fi
+  end=$(tput sgr0)
+  if [ ! -z "$4" ]; then
+    end="${4}"
+  fi
+  
+  echo "${input}" | sed -e "s|$highlight|${start}${highlight}${end}|g"
 }
 
 function bookDesc()
