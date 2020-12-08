@@ -35,9 +35,15 @@ function bookDesc()
 {
   book=$1
   meta=$(epub2txt -m --notext "$book")
-  author=$(echo "$meta" | grep 'Creator: ')
-  title=$(echo "$meta" | grep 'Title: ')
-  echo "${title#*:},${author#*:}"
+  author=$(metaValue "$meta" "Creator: ")
+  title=$(metaValue "$meta" "Title: ")
+  echo "${title}, ${author}"
+}
+
+function metaValue()
+{
+  meta=$1; field=$2
+  echo "$meta" | grep "$field" | awk 'BEGIN{FS=":"}{print $2}' | awk '{$1=$1; print}'
 }
 
 function archive()
