@@ -4,6 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$DIR/leoDict.sh"
 source "$DIR/oxfordDict.sh"
+source "$DIR/settings-funct.sh"
 
 
 function ask()
@@ -44,17 +45,6 @@ function installDeps()
   if ! [ -x "$(command -v sqlite3)" ]; then
     sudo apt install -y sqlite3
   fi
-}
-
-function initSettings()
-{
-  settings="$DIR/settings.conf"
-  if ! [ -f "$settings" ]; then
-    echo "No settings found at '$settings' using '$(basename ${settings}.template)'"
-    echo "Setup your actual environment by copying the template to '$(basename $settings)' and adjust it to your preferences."
-    settings="${settings}.template"
-  fi
-  . "$settings"
 }
 
 function main()
