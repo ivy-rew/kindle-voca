@@ -107,9 +107,13 @@ function selectBook()
 
 function selectWords()
 {
-  # 'DictSuffix to limit lang'
+  BOOKLANG="en" # prefix of the dict-lang: e.g. (fr, en, de, ...)
+  if [ ! -z "$1" ]; then
+    BOOKLANG="${1}"
+  fi
   WORDLIST_QUERY="SELECT DISTINCT text 
     FROM WordList
+    WHERE DictSuffix LIKE '-$BOOKLANG%'
     ORDER BY DateCreated DESC"
   WORDS=$(sqlite3 -newline ' ' $DB "$WORDLIST_QUERY")
   echo $WORDS
