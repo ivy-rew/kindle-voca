@@ -22,3 +22,15 @@ setup(){
   [[ "$fr" == *"schändlich"* ]]
   [[ "$fr" != *"Fetched by"* ]]
 }
+
+@test "leoFrenchAccent" {
+  fr=$(search 'mouillée' fr)
+  echo "fr result: >>${fr}<<" &>2
+  [[ "$fr" == *"nass"* ]]
+}
+
+@test "leoEncode" {
+  fr="$(urlEncode mouillée)"
+  echo "url encoded: ${fr}"
+  [[ "$fr" == "mouill%C3%A9e" ]]
+}
