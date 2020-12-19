@@ -14,11 +14,15 @@ fi
 
 function search()
 {
-  WORD=$1
+  WORD=$1; 
+  BOOKLANG="en";
+  if [ ! -z "$2" ]; then
+    BOOKLANG="${2}"
+  fi
   CACHE_QUERY="SELECT response FROM query_cache c WHERE c.word=='${WORD}'"
   RESPONSE=$(sqlite3 "$LEODB" "$CACHE_QUERY")
   if [[ $RESPONSE != *"matches for"* ]]; then
-      RESPONSE=$(leo -n ${WORD} | sed -e 's|[\”\“]|\"|g' | iconv -f ISO-8859-1 -t utf-8 )
+      RESPONSE=$(leo -l ${BOOKLANG}2de -n ${WORD} | sed -e 's|[\”\“]|\"|g' | iconv -f ISO-8859-1 -t utf-8 )
       if [[ $RESPONSE == *"matches for"* ]]; then
           WRITE_QUERY="INSERT INTO QUERY_CACHE (word,response) VALUES ('${WORD}',\"${RESPONSE}\");"
           sqlite3 "$LEODB" "$WRITE_QUERY"
@@ -30,7 +34,7 @@ function search()
 
 function cleanSearch()
 { # reduce output: only actual translation lines
-  search ${1} | \
+  search ${1} ${2} | \
     sed -e 's|.*dict\.leo\.org:||g' | \
     sed -e 's|^    .*||' | \
     sed -E 's|^ (.*)| \1|g' | \

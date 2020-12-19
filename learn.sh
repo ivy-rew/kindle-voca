@@ -58,6 +58,7 @@ function main()
     MODE=$(askMode)
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"
+    MODE="en"
   fi
   
   WORD_RAW=$(selectWords $MODE) 

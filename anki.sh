@@ -63,8 +63,8 @@ function leoSplit()
 
 function ankiLeo()
 {
-  WORD="$1"
-  LEO=$(cleanSearch "${WORD}")
+  WORD="$1"; BOOKLANG="$2";
+  LEO=$(cleanSearch "${WORD}" "${BOOKLANG}")
   readarray -t TLINES <<< "${LEO}"
   HOUT=""
   for L in "${TLINES[@]}"; do
@@ -76,16 +76,17 @@ function ankiLeo()
 
 function toAnkiLine()
 {
-  WORD=$1
-  SEP=$2
+  WORD=$1; SEP=$2; BOOKLANG=$3;
 
   QUOTED=$(ankiQuote "${WORD}")
   QUOUT=$(htmlBreak "${QUOTED}")
 
-  OXFORD=$(oxford "${WORD}")
-  OXOUT=$(htmlBreak "${OXFORD}")
+  if [ "$BOOKLANG" = "en" ]; then
+    OXFORD=$(oxford "${WORD}")
+    OXOUT=$(htmlBreak "${OXFORD}")
+  fi
 
-  LEO=$(ankiLeo "${WORD}")
+  LEO=$(ankiLeo "${WORD}" "${BOOKLANG}")
   LEOUT=$(htmlBreak "${LEO}")
 
   LINE="${WORD}${SEP}${QUOUT}${SEP}${OXOUT}${SEP}${LEOUT}"
@@ -100,8 +101,11 @@ function anki()
     . kindleVoc.sh "${db}"
     echo "Which words do you want to select?"
     MODE=$(askMode)
+    BOOKLANG="en"
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"
+    MODE="fr"
+    BOOKLANG="${MODE}"
   fi
 
 
@@ -109,10 +113,10 @@ function anki()
   read -r -a WORDS <<< "$WORD_RAW"
 
   SEP='|'
-  FILE='anki.txt'
+  FILE="anki_${BOOKLANG}.txt"
   rm "$FILE"
   for WORD in ${WORDS[@]}; do
-    toAnkiLine "${WORD}" "${SEP}" >> $FILE
+    toAnkiLine "${WORD}" "${SEP}" "${BOOKLANG}" >> $FILE
   done
 
   cat $FILE
