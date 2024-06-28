@@ -20,7 +20,7 @@ function ask()
       case $OPERATION in 
         "ask leo")
             echo "asking leo for meaning of: ${STEM}"
-            search ${STEM}
+            search ${STEM} ${dictLang}
             ;;
         "ask oxford")
             echo "asking oxford for meaning of: $STEM"
@@ -58,7 +58,7 @@ function main()
     MODE=$(askMode)
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"
-    MODE="en"
+    MODE="${dictLang}"
   fi
   
   WORD_RAW=$(selectWords $MODE) 

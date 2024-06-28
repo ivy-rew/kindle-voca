@@ -101,10 +101,10 @@ function anki()
     . kindleVoc.sh "${db}"
     echo "Which words do you want to select?"
     MODE=$(askMode)
-    BOOKLANG="en"
+    BOOKLANG="${dictLang}"
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"
-    MODE="fr"
+    MODE="${dictLang}"
     BOOKLANG="${MODE}"
   fi
 
