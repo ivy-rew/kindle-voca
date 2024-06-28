@@ -8,3 +8,6 @@ kMount=sample
 # for kobo this could be: $kMount/.kobo/KoboReader.sqlite
 # for kindle this could be: [kMount]/system/vocabulary/vocab.db
 db=kobo/sample/KoboReader.sqlite
+
+# the dictionary language
+dictLang=en
