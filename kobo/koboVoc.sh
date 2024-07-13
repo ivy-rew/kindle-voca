@@ -118,3 +118,18 @@ function selectWords()
   WORDS=$(sqlite3 -newline ' ' $DB "$WORDLIST_QUERY")
   echo $WORDS
 }
+
+function syncDb() 
+{
+  remoteDb="${kMount}/.kobo/KoboReader.sqlite"
+  if [ -f "${remoteDb}" ]; then
+    echo "Update Kobo DB from remote?"
+    select yn in "Yes" "No"; do
+      case $yn in
+        Yes ) echo "copying"; cp -v "${remoteDb}" "${db}"; break;;
+        No ) break;;
+      esac
+    done
+    echo "bye sync"
+  fi
+}

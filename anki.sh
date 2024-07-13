@@ -104,6 +104,7 @@ function anki()
     BOOKLANG="${dictLang}"
   else
     . kobo/koboVoc.sh "${db}" "${kMount}"
+    syncDb
     MODE="${dictLang}"
     BOOKLANG="${MODE}"
   fi
